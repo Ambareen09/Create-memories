@@ -9,26 +9,64 @@ import {
   TextField,
 } from '@material-ui/core'
 import { GoogleLogin } from '@react-oauth/google'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './styles'
 import Input from './Input'
 import Icon from './icon'
+import jwt_decode from 'jwt-decode'
+import { signup, signin } from '../../actions/auth'
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+}
 
 const Auth = () => {
   const classes = useStyles()
   const [showPassword, setShowPassword] = useState(false)
   const [isSignup, setIsSignUp] = useState(false)
+  const [formData, setFormData] = useState(initialState)
 
-  const handleSubmit = () => {}
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (isSignup) {
+      dispatch(signup(formData, navigate))
+    } else {
+      dispatch(signin(formData, navigate))
+    }
+  }
+
   const switchMode = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp)
-    handleShowPassword(false)
+    setShowPassword(false)
   }
-  const handleChange = () => {}
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword)
+
   const googleSuccess = async (res) => {
-    console.log(res)
+    const token = res?.credential
+    const result = jwt_decode(res.credential)
+    console.log(result)
+    try {
+      dispatch({ type: 'AUTH', data: { result, token } })
+
+      navigate('/')
+    } catch (e) {
+      console.log(e)
+    }
   }
   const googleFailure = async (e) => {
     console.log(e)
@@ -57,7 +95,7 @@ const Auth = () => {
                   name="lastName"
                   label="Last name"
                   handleChange={handleChange}
-                  half
+                  halfform
                 ></Input>
               </>
             )}
@@ -93,14 +131,23 @@ const Auth = () => {
             {isSignup ? 'Sign Up' : 'Sign In'}
           </Button>
           <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse)
-            }}
-            onError={() => {
-              console.log('Login Failed')
-            }}
+            render={(renderProps) => (
+              <Button
+                className={classes.googleButton}
+                color="primary"
+                fullWidth
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                startIcon={<Icon />}
+                variant="contained"
+              >
+                Google Sign In
+              </Button>
+            )}
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            cookiePolicy="single_host_origin"
           />
-          ;
           <Grid container justify="flex-end">
             <Grid item>
               <Button onClick={switchMode}>

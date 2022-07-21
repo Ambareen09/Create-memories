@@ -1,53 +1,62 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
-import { TextField, Button, Typography, Paper } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import FileBase from "react-file-base64";
+import React, { useState, useEffect } from 'react'
+import { TextField, Button, Typography, Paper } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import FileBase from 'react-file-base64'
 
-import useStyles from "./styles";
-import { createPost, updatePost } from "../../actions/posts";
+import useStyles from './styles'
+import { createPost, updatePost } from '../../actions/posts'
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
-    creator: "",
-    title: "",
-    message: "",
-    tags: "",
-    selectedFile: "",
-  });
+    title: '',
+    message: '',
+    tags: '',
+    selectedFile: '',
+  })
   const post = useSelector((state) =>
-    currentId ? state.posts.find((message) => message._id === currentId) : null
-  );
-  const dispatch = useDispatch();
-  const classes = useStyles();
+    currentId ? state.posts.find((message) => message._id === currentId) : null,
+  )
+  const dispatch = useDispatch()
+  const classes = useStyles()
+  const user = JSON.parse(localStorage.getItem('profile'))
 
   useEffect(() => {
-    if (post) setPostData(post);
-  }, [post]);
+    if (post) setPostData(post)
+  }, [post])
 
   const clear = () => {
-    setCurrentId(0);
+    setCurrentId(0)
     setPostData({
-      creator: "",
-      title: "",
-      message: "",
-      tags: "",
-      selectedFile: "",
-    });
-  };
+      title: '',
+      message: '',
+      tags: '',
+      selectedFile: '',
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (currentId === 0) {
-      dispatch(createPost(postData));
-      clear();
+      dispatch(createPost({ ...postData, name: user?.result?.name }))
+      clear()
     } else {
-      dispatch(updatePost(currentId, postData));
-      clear();
+      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }))
+      clear()
     }
-  };
+  }
+
+  if (!user?.result?.name) {
+    return (
+      <Paper className="{classes.paper}">
+        <Typography variant="h6" align="center">
+          Please Sign in to create your own memories
+        </Typography>
+      </Paper>
+    )
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -55,20 +64,12 @@ const Form = ({ currentId, setCurrentId }) => {
         autoComplete="off"
         noValidate
         className={`${classes.root} ${classes.form}`}
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         <Typography variant="h6">
-          {currentId ? `Editing "${post.title}"` : "Creating a Memory"}
+          {currentId ? `Editing "${post.title}"` : 'Creating a Memory'}
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
+
         <TextField
           name="title"
           variant="outlined"
@@ -96,7 +97,7 @@ const Form = ({ currentId, setCurrentId }) => {
           fullWidth
           value={postData.tags}
           onChange={(e) =>
-            setPostData({ ...postData, tags: e.target.value.split(",") })
+            setPostData({ ...postData, tags: e.target.value.split(',') })
           }
         />
         <div className={classes.fileInput}>
@@ -114,7 +115,8 @@ const Form = ({ currentId, setCurrentId }) => {
           color="primary"
           size="large"
           type="submit"
-          fullWidth>
+          fullWidth
+        >
           Submit
         </Button>
         <Button
@@ -122,12 +124,13 @@ const Form = ({ currentId, setCurrentId }) => {
           color="secondary"
           size="small"
           onClick={clear}
-          fullWidth>
+          fullWidth
+        >
           Clear
         </Button>
       </form>
     </Paper>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form
