@@ -25,7 +25,7 @@ const Post = ({ post, setCurrentId }) => {
   const Likes = () => {
     if (post.likes.length > 0) {
       return post.likes.find(
-        (like) => like === (user?.result?.googleId || user?.result?._id),
+        (like) => like === (user?.result?.sub || user?.result?._id),
       ) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
@@ -94,7 +94,7 @@ const Post = ({ post, setCurrentId }) => {
         >
           <Likes />
         </Button>
-        {(user?.result?.googleId === post?.creator ||
+        {(user?.result?.sub === post?.creator ||
           user?.result?._id === post?.creator) && (
           <Button
             size="small"
