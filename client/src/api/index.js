@@ -3,7 +3,8 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'https://create-memories-daily.herokuapp.com/',
+  baseURL: 'http://localhost:5000/',
+  // baseURL: 'https://create-memories-daily.herokuapp.com/',
 })
 
 API.interceptors.request.use((req) => {
@@ -19,6 +20,12 @@ API.interceptors.request.use((req) => {
 // const url = 'https://memories-list-api.herokuapp.com/posts'
 
 export const fetchPosts = () => API.get('/posts')
+export const fetchPostsBySearch = (searchQuery) =>
+  API.get(
+    `/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${
+      searchQuery.tags || 'none'
+    }`,
+  )
 export const createPost = (newPost) => API.post('/posts', newPost)
 export const updatePost = (id, updatedPost) =>
   API.patch(`/posts/${id}`, updatedPost)

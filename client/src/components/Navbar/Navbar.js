@@ -4,7 +4,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import decode from 'jwt-decode'
 
-import memories from '../../images/memories.png'
 import * as actionType from '../../constants/actionTypes'
 import useStyles from './styles'
 
@@ -37,7 +36,7 @@ const Navbar = () => {
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
-      <div className={classes.brandContainer}>
+      <Link to="/" className={classes.brandContainer}>
         <Typography
           component={Link}
           to="/"
@@ -47,7 +46,7 @@ const Navbar = () => {
         >
           Create Your Memories
         </Typography>
-      </div>
+      </Link>
       <div>
         <Toolbar className={classes.toolbar}>
           {user?.result ? (
