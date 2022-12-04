@@ -37,13 +37,7 @@ const Navbar = () => {
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
       <Link to="/" className={classes.brandContainer}>
-        <Typography
-          component={Link}
-          to="/"
-          className={classes.heading}
-          variant="h5"
-          align="center"
-        >
+        <Typography className={classes.heading} variant="h5" align="center">
           Create Your Memories
         </Typography>
       </Link>
