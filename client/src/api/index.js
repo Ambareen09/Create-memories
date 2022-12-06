@@ -3,8 +3,9 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/',
+  // baseURL: 'http://localhost:5000/',
   // baseURL: 'https://create-memories-daily.herokuapp.com/',
+  baseURL: 'https://create-memories.onrender.com/'
 })
 
 API.interceptors.request.use((req) => {
