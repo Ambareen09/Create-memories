@@ -1,6 +1,6 @@
 # Create-memories
  
- ##  If you want to add more functionalities or find a bug, here are the steps to clone this repo and make it up and running in your local machine
+ ##  If you want to add more functionalities or solve a bug you came across, here are the steps to clone this repo and make it up and running in your local machine
  
  1. Clone this repo
  
