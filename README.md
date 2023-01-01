@@ -2,6 +2,10 @@
  
  ##  If you want to add more functionalities or solve a bug you came across, here are the steps to clone this repo and make it up and running in your local machine
  
+ ## Pre-requisites
+ 
+ Existing MondoDB account and your personal database api link
+ 
  1. Clone this repo
  
  ```
@@ -12,6 +16,8 @@
  ```
  npm install
  ```
+ 
+ 4. Create `.env` file in server folder and add `CONNECTION_URL="YOUR_MONGODB_PRIVATE_LINK"` 
  
  3. Start the server in client and server folder respectively
  
