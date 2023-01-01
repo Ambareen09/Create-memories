@@ -6,6 +6,8 @@
  
  Existing MondoDB account and your personal database api link
  
+ ## Steps:
+ 
  1. Clone this repo
  
  ```
